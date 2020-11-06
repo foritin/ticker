@@ -1,5 +1,6 @@
 from utils.config_loader import Config
 from binance.client import Client
+import pytz
 
 
 class BnHistory(Config):
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     import datetime
     instance = BnHistory()
     instance.initial()
-    gen = instance.get_kline(period='1m', start='2000-01-01', end='2020-01-01')
+    gen = instance.get_kline(period='1m', start='2020-01-01 15:01:00+08:00', end='2020-01-01 15:02:00+08:00')
     for one in gen:
         print(dict(zip(instance.data_format, one)))
         print(datetime.datetime.fromtimestamp(one[0]/1000), one[1:])

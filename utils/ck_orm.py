@@ -35,16 +35,18 @@ class Connection(Config):
         conn = self.get_connection() if not new_connect else self.get_connection(new_connect=True)
         assert isinstance(params, list) or isinstance(params, dict)
         if not many:
-            with conn.cursor() as cursor:
-                cursor.execute(sql, params)
-                result = cursor.fetchall()
-            conn.commit()
+            with conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(sql, params)
+                    result = cursor.fetchall()
+                conn.commit()
             return result
         else:
-            with conn.cursor() as cursor:
-                cursor.executemany(sql, params)
-                result = cursor.fetchall()
-            conn.commit()
+            with conn:
+                with conn.cursor() as cursor:
+                    cursor.executemany(sql, params)
+                    result = cursor.fetchall()
+                conn.commit()
             return result
 
 
